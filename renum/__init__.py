@@ -22,9 +22,9 @@
 
 import sys as _sys
 
-from .renum import renum as renum
+from .renum import RenumType, renum
 
-__all__ = ("renum",)
+__all__ = ("RenumType", "renum")
 
 if _sys.version_info < (3, 8):
     from importlib_metadata import metadata as _metadata

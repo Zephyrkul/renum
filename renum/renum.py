@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
 
-__all__ = ("renum",)
+__all__ = ("RenumType", "renum")
 _matches: ContextVar[dict[renum, re.Match[str]]] = ContextVar("_match")
 
 

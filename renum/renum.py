@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 import sys
 from contextvars import ContextVar
-from enum import Enum, EnumMeta as EnumType
+from enum import Enum, EnumMeta
 from typing import TYPE_CHECKING, Any, Iterator, overload
 
 if TYPE_CHECKING:
@@ -14,7 +14,7 @@ __all__ = ("RenumType", "renum")
 _matches: ContextVar[dict[renum, re.Match[str]]] = ContextVar("_match")
 
 
-class RenumType(EnumType):
+class RenumType(EnumMeta):
     _pattern_: re.Pattern[str]
 
     @property

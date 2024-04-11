@@ -4,7 +4,7 @@ import re
 import sys
 from contextvars import ContextVar
 from enum import Enum
-from typing import TYPE_CHECKING, Any, ClassVar, Iterator, overload
+from typing import TYPE_CHECKING, Any, Iterator, overload
 
 if TYPE_CHECKING:
     from typing_extensions import Self
@@ -14,8 +14,13 @@ __all__ = ("renum",)
 _matches: ContextVar[dict[renum, re.Match[str]]] = ContextVar("_match")
 
 
-class renum(str, Enum):
-    _pattern_: ClassVar[re.Pattern[str]]
+class renum(Enum):
+    if TYPE_CHECKING:
+        _pattern_: re.Pattern[str]
+        _value_: str
+
+        @property
+        def value(self) -> str: ...
 
     @staticmethod
     def _generate_next_value_(
@@ -25,7 +30,7 @@ class renum(str, Enum):
 
     def __new__(cls, *values: Any) -> Self:
         value = str(*values)
-        member = str.__new__(cls, value)
+        member = object.__new__(cls)
         member._value_ = value
         return member
 
@@ -36,8 +41,10 @@ class renum(str, Enum):
             flags=flags,
         )
 
-    __str__ = str.__str__  # type: ignore
-    __format__ = str.__format__  # type: ignore
+    def __str__(self) -> str:
+        return self.value
+
+    __hash__ = object.__hash__
 
     @property
     def last_match(self) -> re.Match[str] | None:

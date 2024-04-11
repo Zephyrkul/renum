@@ -1,0 +1,32 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-toml
+    -   id: check-added-large-files
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.6
+    hooks:
+    -   id: ruff
+        args: [ --fix, --exit-non-zero-on-fix ]
+    -   id: ruff-format
+-   repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.358
+    hooks:
+    -   id: pyright
+        additional_dependencies:
+            # required dependencies
+        -   importlib_metadata >= 1.4.0
+
+            # typing
+        -   typing_extensions
+ci:
+    autoupdate_schedule: quarterly
+    skip:
+    # CI doesn't like pip scripts calling their own node, so skip this for now
+    -   pyright

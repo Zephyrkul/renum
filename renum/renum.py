@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 import sys
 from contextvars import ContextVar
-from enum import Enum
+from enum import Enum, EnumMeta as EnumType
 from typing import TYPE_CHECKING, Any, Iterator, overload
 
 if TYPE_CHECKING:
@@ -14,9 +14,16 @@ __all__ = ("renum",)
 _matches: ContextVar[dict[renum, re.Match[str]]] = ContextVar("_match")
 
 
-class renum(Enum):
+class RenumType(EnumType):
+    _pattern_: re.Pattern[str]
+
+    @property
+    def pattern(self) -> re.Pattern[str]:
+        return self._pattern_
+
+
+class renum(Enum, metaclass=RenumType):
     if TYPE_CHECKING:
-        _pattern_: re.Pattern[str]
         _value_: str
 
         @property
@@ -36,7 +43,7 @@ class renum(Enum):
 
     def __init_subclass__(cls, flags: int | re.RegexFlag = 0, **kwargs: Any) -> None:
         super().__init_subclass__(**kwargs)
-        cls._pattern_ = re.compile(
+        cls._pattern_ = re.compile(  # type: ignore[reportPrivateUsage]
             r"|".join(rf"(?P<{member.name}>{member.value})" for member in cls),
             flags=flags,
         )
@@ -52,13 +59,6 @@ class renum(Enum):
         The last re.Match that matched this renum member's pattern.
         """
         return _matches.get({}).get(self)
-
-    @property
-    def pattern(self) -> re.Pattern[str]:
-        """
-        The compiled re.Pattern for this renum class.
-        """
-        return self.__class__._pattern_
 
     @overload
     @classmethod
@@ -86,7 +86,7 @@ class renum(Enum):
         Searches the specified string for an instance of this renum class,
         as per the standard lib's re.search function.
         """
-        return cls._from_match(cls._pattern_.search(string, pos, endpos))
+        return cls._from_match(cls.pattern.search(string, pos, endpos))
 
     @classmethod
     def match(cls, string: str, pos: int = 0, endpos: int = sys.maxsize) -> Self | None:
@@ -94,7 +94,7 @@ class renum(Enum):
         Searches the specified string for an instance of this renum class,
         as per the standard lib's re.match function.
         """
-        return cls._from_match(cls._pattern_.match(string, pos, endpos))
+        return cls._from_match(cls.pattern.match(string, pos, endpos))
 
     @classmethod
     def fullmatch(
@@ -104,7 +104,7 @@ class renum(Enum):
         Searches the specified string for an instance of this renum class,
         as per the standard lib's re.fullmatch function.
         """
-        return cls._from_match(cls._pattern_.fullmatch(string, pos, endpos))
+        return cls._from_match(cls.pattern.fullmatch(string, pos, endpos))
 
     @classmethod
     def findall(
@@ -124,4 +124,4 @@ class renum(Enum):
         Searches the specified string for instances of this renum class,
         as per the standard lib's re.finditer function.
         """
-        return map(cls._from_match, cls._pattern_.finditer(string, pos, endpos))
+        return map(cls._from_match, cls.pattern.finditer(string, pos, endpos))

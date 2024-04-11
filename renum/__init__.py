@@ -31,7 +31,7 @@ if _sys.version_info < (3, 8):
 else:
     from importlib.metadata import metadata as _metadata
 
-__copyright__ = "Copyright 2019-2023 Zephyrkul"
+__copyright__ = "Copyright 2024-2024 Zephyrkul"
 
 _meta = _metadata(__name__)
 __title__ = _meta["Name"]

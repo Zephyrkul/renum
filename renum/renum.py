@@ -19,6 +19,9 @@ class RenumType(EnumType):
 
     @property
     def pattern(self) -> re.Pattern[str]:
+        """
+        The compiled re.Pattern for this renum class.
+        """
         return self._pattern_
 
 

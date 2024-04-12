@@ -22,7 +22,7 @@ class RenumType(EnumMeta):
     @property
     def pattern(self) -> regex.Pattern[str]:
         """
-        The compiled `re.Pattern` for this renum class.
+        The compiled `regex.Pattern` for this renum class.
         """
         return self._pattern_
 
@@ -32,7 +32,7 @@ class renum(Enum, metaclass=RenumType):
     A utility class for generating Enum-like regular expression patterns.
 
     Parameters:
-        flags (int | re.RegexFlag): Regular expression flags to pass to `re.compile`
+        flags (int | regex.RegexFlag): Regular expression flags to pass to `regex.compile`
     """
 
     @staticmethod

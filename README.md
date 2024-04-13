@@ -35,7 +35,7 @@ import xml.etree.ElementTree as ET
 from renum import renum
 
 
-class HappeningsRenum(renum):
+class Happenings(renum):
     ADMITTED = r"@@(?P<nation>[^@]+)@@ was admitted to the World Assembly\."
     MOVED = r"@@(?P<nation>[^@]+)@@ relocated from %%(?P<from>[^%]+)%% to %%(?P<to>[^%]+)%%\."
     ENDORSED = r"@@(?P<endorser>[^@]+)@@ endorsed @@(?P<endorsee>[^@]+)@@\."
@@ -45,23 +45,23 @@ class HappeningsRenum(renum):
 def main():
     root = ET.parse("happenings.xml")
     for element in root.iterfind("HAPPENINGS/EVENT/TEXT"):
-        event = HappeningsRenum.fullmatch(element.text)
-        if event is HappeningsRenum.ADMITTED:
+        event = Happenings.fullmatch(element.text)
+        if event is Happenings.ADMITTED:
             print("Welcome to the WA, %s!" % event.last_match.group("nation"))
         elif (
-            event is HappeningsRenum.MOVED
+            event is Happenings.MOVED
             and event.last_match.group("to") == "the_rejected_realms"
         ):
             print("Welcome to TRR, %s!" % event.last_match.group("nation"))
         elif (
-            event is HappeningsRenum.ENDORSED
+            event is Happenings.ENDORSED
             and event.last_match.group("endorsee") == "zephyrkul"
         ):
             print(
                 "Thanks for the endorsement, %s!" % event.last_match.group("endorser")
             )
         elif (
-            event is HappeningsRenum.WITHDREW_ENDORSEMENT
+            event is Happenings.WITHDREW_ENDORSEMENT
             and event.last_match.group("endorsee") == "zephyrkul"
         ):
             print("But why, %s? \N{PENSIVE FACE}" % event.last_match.group("endorser"))

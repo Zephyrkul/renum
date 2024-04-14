@@ -20,6 +20,8 @@ class _Scanner[_renumT: renum](Scanner[str]):  # type: ignore
     def search(self) -> _renumT | None: ...
 
 class RenumType(EnumMeta, regex.Pattern[str]):  # type: ignore
+    """Metaclass for renum classes"""
+
     # flags is actually implemented in __init_subclass__,
     # but pyright doesn't pick up on that
     def __new__[_RenumTypeT: RenumType](
@@ -107,7 +109,15 @@ class RenumType(EnumMeta, regex.Pattern[str]):  # type: ignore
         """
 
 class renum(Enum, regex.Match[str], metaclass=RenumType):  # type: ignore
+    """
+    A utility class for generating Enum-like regular expression patterns.
+
+    Parameters:
+        flags (int | regex.RegexFlag): Regular expression flags to pass to `regex.compile`
+    """
+
     _value_: str
+
     @overload
     def __new__(cls, value: str = ..., /) -> Self: ...
     @overload

@@ -9,98 +9,98 @@ from regex._regex import Scanner
 
 __all__ = ("RenumType", "renum")
 
-class _Scanner[renum: renum](Scanner[str]):  # type: ignore
+class _Scanner[_renumT: renum](Scanner[str]):  # type: ignore
     @override
     def __iter__(self) -> Self: ...
     @override
-    def __next__(self) -> renum: ...
+    def __next__(self) -> _renumT: ...
     @override
-    def match(self) -> renum | None: ...
+    def match(self) -> _renumT | None: ...
     @override
-    def search(self) -> renum | None: ...
+    def search(self) -> _renumT | None: ...
 
 class RenumType(EnumMeta, regex.Pattern[str]):  # type: ignore
     # flags is actually implemented in __init_subclass__,
     # but pyright doesn't pick up on that
-    def __new__[RenumTypeT: RenumType](
-        metacls: type[RenumTypeT],
+    def __new__[_RenumTypeT: RenumType](
+        metacls: type[_RenumTypeT],
         cls: str,
         bases: tuple[type, ...],
         classdict: _EnumDict,
         *,
         flags: int | regex.RegexFlag = ...,
         **kwds: Any,
-    ) -> RenumTypeT: ...
+    ) -> _RenumTypeT: ...
 
     _pattern_: regex.Pattern[str]
 
     @override
-    def search[renumT: renum](
-        cls: type[renumT],
+    def search[_renumT: renum](
+        cls: type[_renumT],
         string: str,
         pos: int = ...,
         endpos: int = ...,
         concurrent: bool | None = ...,
         timeout: float | None = ...,
-    ) -> renumT | None:
+    ) -> _renumT | None:
         """
         Searches the specified string for an instance of this renum class,
         as per the `regex.Pattern.search` method.
         """
 
     @override
-    def match[renumT: renum](
-        cls: type[renumT],
+    def match[_renumT: renum](
+        cls: type[_renumT],
         string: str,
         pos: int = ...,
         endpos: int = ...,
         concurrent: bool | None = ...,
         timeout: float | None = ...,
-    ) -> renumT | None:
+    ) -> _renumT | None:
         """
         Searches the specified string for an instance of this renum class,
         as per the `regex.Pattern.match` method.
         """
 
     @override
-    def fullmatch[renumT: renum](
-        cls: type[renumT],
+    def fullmatch[_renumT: renum](
+        cls: type[_renumT],
         string: str,
         pos: int = ...,
         endpos: int = ...,
         concurrent: bool | None = ...,
         timeout: float | None = ...,
-    ) -> renumT | None:
+    ) -> _renumT | None:
         """
         Searches the specified string for an instance of this renum class,
         as per the `regex.Pattern.fullmatch` method.
         """
 
     @override
-    def finditer[renumT: renum](
-        cls: type[renumT],
+    def finditer[_renumT: renum](
+        cls: type[_renumT],
         string: str,
         pos: int = ...,
         endpos: int = ...,
         overlapped: bool = ...,
         concurrent: bool | None = ...,
         timeout: float | None = ...,
-    ) -> _Scanner[renumT]:
+    ) -> _Scanner[_renumT]:
         """
         Searches the specified string for instances of this renum class,
         as per the `regex.Pattern.finditer` method.
         """
 
     @override
-    def scanner[renumT: renum](
-        cls: type[renumT],
+    def scanner[_renumT: renum](
+        cls: type[_renumT],
         string: str,
         pos: int | None = ...,
         endpos: int | None = ...,
         overlapped: bool = ...,
         concurrent: bool | None = ...,
         timeout: float | None = ...,
-    ) -> _Scanner[renumT]:
+    ) -> _Scanner[_renumT]:
         """
         Searches the specified string for instances of this renum class,
         as per the `regex.Pattern.scanner` method.

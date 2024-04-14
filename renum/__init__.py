@@ -21,15 +21,11 @@
 # SOFTWARE.
 
 import sys as _sys
+from importlib.metadata import metadata as _metadata
 
 from .renum import RenumType, renum
 
 __all__ = ("RenumType", "renum")
-
-if _sys.version_info < (3, 8):
-    from importlib_metadata import metadata as _metadata
-else:
-    from importlib.metadata import metadata as _metadata
 
 __copyright__ = "Copyright 2024-2024 Zephyrkul"
 

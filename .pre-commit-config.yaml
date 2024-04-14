@@ -21,7 +21,7 @@ repos:
     -   id: pyright
         additional_dependencies:
             # required dependencies
-        -   importlib_metadata >= 1.4.0
+        -   regex
 
             # typing
         -   typing_extensions

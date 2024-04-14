@@ -11,7 +11,7 @@
     name = 'renum'
     description = 'Easily build Enum-like regular expression patterns'
     readme = 'README.md'
-    requires-python = '>=3.7.0,<4.0'
+    requires-python = '>=3.9.0,<4.0'
     classifiers = [
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: MIT License',
@@ -19,20 +19,19 @@
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
         'Topic :: Software Development :: Libraries',
         'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: Text Processing',
+        'Topic :: Text Processing :: General',
         'Topic :: Utilities',
         'Typing :: Typed',
     ]
     dependencies = [
-        'regex',
-        'importlib_metadata >= 1.4.0; python_version < "3.8"'
+        'regex'
     ]
     dynamic = ['version']
 
@@ -43,9 +42,9 @@
     name = 'Zephyrkul'
 
 [project.urls]
-    homepage = 'https://github.com/Zephyrkul/renum'
-    #   documentation = 'https://renum.readthedocs.io/en/stable/'
-    repository = 'https://github.com/Zephyrkul/renum.git'
+    Homepage = 'https://github.com/Zephyrkul/renum'
+    #   Documentation = 'https://renum.readthedocs.io/en/stable/'
+    Repository = 'https://github.com/Zephyrkul/renum.git'
 
 [project.optional-dependencies]
     docs = ['Sphinx ~= 5.3']
@@ -53,12 +52,12 @@
 [tool.setuptools_scm]
 
 [tool.pyright]
-    pythonVersion = '3.7'
+    pythonVersion = '3.9'
     reportUnnecessaryTypeIgnoreComment = 'warning'
     typeCheckingMode = 'strict'
 
 [tool.ruff]
-    target-version = 'py37'
+    target-version = 'py39'
 
 [tool.ruff.lint]
     select = ['E', 'F', 'B', 'Q', 'I', 'W']

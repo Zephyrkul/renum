@@ -46,14 +46,14 @@ if __name__ == "__main__":
         if not line:
             break
         action = Actions.match(line)  # The renum class acts like a Pattern...
-        if action is None:
-            print("Unknown action: %s" % line)
-        elif action is Actions.GO:
+        if action is Actions.GO:
             print("You went %s" % action.group("direction"))  # and each entry acts like a Match
         elif action is Actions.EXAMINE:
             print("You take a closer look at %s. Looks grungy." % action.group("item"))
         elif action is Actions.OPEN:
             print("You tried to open the %s, but it was locked." % action.group("object"))
+        else:
+            print("Unknown action: %s" % line)
 ```
 
 Troubleshooting a misbehaving renum:

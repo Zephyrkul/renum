@@ -1,6 +1,8 @@
+# the below regex subclassing is a white lie to make typechecking easier
+
 from enum import Enum, EnumMeta, _EnumDict  # type: ignore[reportPrivateUsage]
 from typing import Any, overload
-from typing_extensions import Buffer, Self
+from typing_extensions import Buffer, Self, override
 
 import regex
 from regex._regex import Scanner
@@ -8,9 +10,13 @@ from regex._regex import Scanner
 __all__ = ("RenumType", "renum")
 
 class _Scanner[renum: renum](Scanner[str]):  # type: ignore
+    @override
     def __iter__(self) -> Self: ...
+    @override
     def __next__(self) -> renum: ...
+    @override
     def match(self) -> renum | None: ...
+    @override
     def search(self) -> renum | None: ...
 
 class RenumType(EnumMeta, regex.Pattern[str]):  # type: ignore
@@ -28,6 +34,7 @@ class RenumType(EnumMeta, regex.Pattern[str]):  # type: ignore
 
     _pattern_: regex.Pattern[str]
 
+    @override
     def search[renumT: renum](
         cls: type[renumT],
         string: str,
@@ -41,6 +48,7 @@ class RenumType(EnumMeta, regex.Pattern[str]):  # type: ignore
         as per the `regex.Pattern.search` method.
         """
 
+    @override
     def match[renumT: renum](
         cls: type[renumT],
         string: str,
@@ -54,6 +62,7 @@ class RenumType(EnumMeta, regex.Pattern[str]):  # type: ignore
         as per the `regex.Pattern.match` method.
         """
 
+    @override
     def fullmatch[renumT: renum](
         cls: type[renumT],
         string: str,
@@ -67,6 +76,7 @@ class RenumType(EnumMeta, regex.Pattern[str]):  # type: ignore
         as per the `regex.Pattern.fullmatch` method.
         """
 
+    @override
     def finditer[renumT: renum](
         cls: type[renumT],
         string: str,
@@ -81,6 +91,7 @@ class RenumType(EnumMeta, regex.Pattern[str]):  # type: ignore
         as per the `regex.Pattern.finditer` method.
         """
 
+    @override
     def scanner[renumT: renum](
         cls: type[renumT],
         string: str,

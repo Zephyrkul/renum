@@ -28,6 +28,8 @@ if TYPE_CHECKING:
 
 
 class _Scanner(Generic[_renumT]):
+    __slots__ = ("_func", "_scanner")
+
     def __init__(self, f: Any, scanner: Scanner[str]) -> None:
         self._func = f
         self._scanner = scanner
@@ -62,7 +64,8 @@ def _augment_error(err: regex.error, name: str) -> None:
 class RenumType(EnumMeta):
     """Metaclass for renum classes"""
 
-    _pattern_: regex.Pattern[str]
+    # default to never matching anything
+    _pattern_: regex.Pattern[str] = regex.compile(r"^\b$")
 
     @overload
     def _from_match(cls, match: None) -> None: ...
@@ -146,6 +149,8 @@ class renum(Enum, metaclass=RenumType):
         cls, flags: int | regex.RegexFlag = 0, **keywords: Any
     ) -> None:
         super().__init_subclass__(**keywords)
+        if not len(cls):
+            return  # use the default null-match pattern
         debug = flags & regex.DEBUG != 0
         if debug:
             cls._debug_instances(flags)

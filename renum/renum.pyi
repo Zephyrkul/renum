@@ -112,6 +112,9 @@ class renum(Enum, regex.Match[str], metaclass=RenumType):  # type: ignore
     def __new__(cls, value: str = ..., /) -> Self: ...
     @overload
     def __new__(cls, value: Buffer, encoding: str, errors: str = ..., /) -> Self: ...
+
+    # Actual return type is -> regex.Match[str] | None
+    # In most cases when this is used, a match has statically been made
     @property
     def last_match(self) -> regex.Match[str] | Any:
         """

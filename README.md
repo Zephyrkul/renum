@@ -27,51 +27,51 @@ If you need help with using renum, find a bug, or have a feature request, feel f
 
 ## Examples
 
-Scanning through happenings from an XML file:
+Parsing from standard input:
 
 ```py
-import xml.etree.ElementTree as ET
-
+import regex
 from renum import renum
 
 
-class Happenings(renum):
-    ADMITTED = r"@@(?P<nation>[^@]+)@@ was admitted to the World Assembly\."
-    MOVED = r"@@(?P<nation>[^@]+)@@ relocated from %%(?P<from>[^%]+)%% to %%(?P<to>[^%]+)%%\."
-    ENDORSED = r"@@(?P<endorser>[^@]+)@@ endorsed @@(?P<endorsee>[^@]+)@@\."
-    WITHDREW_ENDORSEMENT = r"@@(?P<endorser>[^@]+)@@ withdrew its endorsement from @@(?P<endorsee>[^@]+)@@\."
-
-
-def main():
-    root = ET.parse("happenings.xml")
-    for element in root.iterfind("HAPPENINGS/EVENT/TEXT"):
-        event = Happenings.fullmatch(element.text)
-        if event is Happenings.ADMITTED:
-            print("Welcome to the WA, %s!" % event.last_match.group("nation"))
-        elif (
-            event is Happenings.MOVED
-            and event.last_match.group("to") == "the_rejected_realms"
-        ):
-            print("Welcome to TRR, %s!" % event.last_match.group("nation"))
-        elif (
-            event is Happenings.ENDORSED
-            and event.last_match.group("endorsee") == "zephyrkul"
-        ):
-            print(
-                "Thanks for the endorsement, %s!" % event.last_match.group("endorser")
-            )
-        elif (
-            event is Happenings.WITHDREW_ENDORSEMENT
-            and event.last_match.group("endorsee") == "zephyrkul"
-        ):
-            print("But why, %s? \N{PENSIVE FACE}" % event.last_match.group("endorser"))
+class Actions(renum, flags=regex.IGNORECASE):
+    GO = r"go (?P<direction>north|south|east|west)"
+    EXAMINE = r"examine (?P<item>[\w\s]+)"
+    OPEN = r"open (?P<object>door|chest)"
 
 
 if __name__ == "__main__":
-    main()
+    while True:
+        line = input()
+        if not line:
+            break
+        action = Actions.match(line)  # The renum class acts like a Pattern...
+        if action is None:
+            print("Unknown action: %s" % line)
+        elif action is Actions.GO:
+            print("You went %s" % action.group("direction"))  # and each entry acts like a Match
+        elif action is Actions.EXAMINE:
+            print("You take a closer look at %s. Looks grungy." % action.group("item"))
+        elif action is Actions.OPEN:
+            print("You tried to open the %s, but it was locked." % action.group("object"))
+```
+
+Troubleshooting a misbehaving renum:
+
+```pycon
+>>> import regex
+>>> from renum import renum
+>>>
+>>> class Bad(renum, flags=regex.IGNORECASE | regex.DEBUG):
+...     GOOD = r"no (?:issues|problems) here"
+...     BAD = r"whoops,\s(?P<missed something)"
+...
+regex.error: bad character in group name at position 29 in BAD
+whoops,\s(?P<missed something)
+                             ^
 ```
 
 ## Requirements
 
-- [Python 3.7+](https://www.python.org/)
+- [Python 3.9+](https://www.python.org/)
 - [regex](https://pypi.org/project/regex/)

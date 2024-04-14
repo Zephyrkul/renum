@@ -192,4 +192,10 @@ class renum(Enum, metaclass=RenumType):
         return _matches.get({}).get(self)
 
     def __getattr__(self, name: str) -> Any:
+        last_match = self.last_match
+        if last_match is None:
+            raise RuntimeError(
+                f"renum {type(self).__qualname__}.{self.name} has"
+                " yet to match any string in the current context"
+            )
         return getattr(self.last_match, name)

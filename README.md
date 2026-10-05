@@ -47,11 +47,15 @@ if __name__ == "__main__":
             break
         action = Actions.match(line)  # The renum class acts like a Pattern...
         if action is Actions.GO:
-            print("You went %s" % action.group("direction"))  # and each entry acts like a Match
+            print(
+                "You went %s" % action.group("direction")
+            )  # and each entry acts like a Match
         elif action is Actions.EXAMINE:
             print("You take a closer look at %s. Looks grungy." % action.group("item"))
         elif action is Actions.OPEN:
-            print("You tried to open the %s, but it was locked." % action.group("object"))
+            print(
+                "You tried to open the %s, but it was locked." % action.group("object")
+            )
         else:
             print("Unknown action: %s" % line)
 ```
@@ -65,7 +69,6 @@ Troubleshooting a misbehaving renum:
 >>> class Bad(renum, flags=regex.IGNORECASE | regex.DEBUG):
 ...     GOOD = r"no (?:issues|problems) here"
 ...     BAD = r"whoops,\s(?P<missed something)"
-...
 regex.error: bad character in group name at position 29 in BAD
 whoops,\s(?P<missed something)
                              ^
